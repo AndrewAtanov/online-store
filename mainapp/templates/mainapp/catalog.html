@@ -1,0 +1,239 @@
+{% extends "mainapp/base.html" %}
+
+{% block content %}
+    {% load staticfiles %}
+
+    <div class="my-nav-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" style="margin-bottom: 5px;">
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li class="active">Электроинструменты</li>
+                    </ol>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="my-catalog">
+        <div class="container">
+            <div class="row hidden-lg">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-default">Фильтры</button>
+                </div>
+            </div>
+            <div class="row">
+                <div id="my-catalog-prop" class="col-md-3 hidden-sm hidden-xs hidden-md">
+                    <div class="panel">
+                        <div class="panel-body text-center">
+                            <h4 class="text-primary ">Фильтры</h4>
+                            <form class="form-horizontal" role="form">
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="inputType" class="control-label">Цена</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label for="inputKey" class="col-md-1 control-label">от</label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" id="usr">
+                                            </div>
+                                            <label for="inputValue" class="col-md-1 control-label">до</label>
+                                            <div class="col-md-4">
+                                                 <input type="text" class="form-control" id="usr">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="my-catalog-table" class="col-lg-9 col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-responsive btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img src="{% static 'img/shurvert.jpg' %}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В</span></a>
+                                    </div>
+                                    <div class="row" align="center">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">2599 руб.</div>
+                                            </div>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" class="btn btn-success">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
