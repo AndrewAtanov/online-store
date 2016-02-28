@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'mainapp/base.html' %}
 
-</body>
-</html>
+{% load staticfiles %}
+
+{% block title %} Акции {% endblock %}
+
+{% block content %}
+    <div class="my-nav-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" style="margin-bottom: 5px;">
+                        <li><a href="#">Главная</a></li>
+                        <li class="active">Акции</li>
+                    </ol>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Акции</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% for key, val in dict.items %}
+                <div class="col-md-4">
+                <div class="my-sale-item">
+                    <a href="#"><img class="img-responsive" src="{% static '' %}{{ val }}"></a>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

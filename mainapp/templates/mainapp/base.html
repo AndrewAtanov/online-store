@@ -8,7 +8,7 @@
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/jquery-2.2.0.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/bootstrap.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap.css' %}">
-{#    <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap-theme.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap-theme.css' %}">#}
     <link href="{% static 'css/mystyles.css' %}" rel="stylesheet" type="text/css">
 
 </head>
@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbar-ex-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a href="/">Главная<br></a>
+                    <a href="/"> Главная<br></a>
                 </li>
                 <li class="">
                     <a href="/catalog">Каталог<br></a>
@@ -40,10 +40,12 @@
                     <a href="/contact">Контакты<br></a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-fw glyphicon glyphicon-shopping-cart pull-left text-inverse"></i><br></a>
+                    <a href="/cart/"><i
+                            class="fa fa-fw glyphicon glyphicon-shopping-cart pull-left text-inverse"></i><br></a>
                 </li>
 
-                <li><a href="#"><i class="fa fa-fw glyphicon glyphicon-search text-inverse"></i></a></li></ul>
+                <li><a href="#"><i class="fa fa-fw glyphicon glyphicon-search text-inverse"></i></a></li>
+            </ul>
         </div>
     </div>
 </div>

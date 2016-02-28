@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'mainapp/base.html' %}
 
-</body>
-</html>
+{% load staticfiles %}
+
+{% block title %} Каталог {% endblock %}
+
+{% block content %}
+    <div class="my-nav-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" style="margin-bottom: 5px;">
+                        <li><a href="/">Главная</a></li>
+                        <li class="active">Корзина</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Корзина</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped media-middle">
+                    <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Кол-во</th>
+                        <th>Цена</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in dict %}
+                        <tr class="my-cart-item">
+                            <td>
+                                <div class="row-eq-height vertical-align">
+                                    <div class="col-md-6">
+                                        <img src="{% static '' %}{{ row.img_url }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ row.name }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="my-vertical-align">{{ row.number }}</td>
+                            <td class="my-vertical-align">{{ row.price }} руб.</td>
+                            <td class="my-vertical-align"><span class="glyphicon glyphicon-remove-sign delete"></span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <div class="row">
+                    <h2><b>ИТОГО:</b> {{ sum }} руб.</h2>
+                </div>
+                <div class="row text-right">
+                    <button type="button" class="btn btn-lg btn-success">
+                        Оформить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

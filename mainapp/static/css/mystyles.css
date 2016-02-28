@@ -1,5 +1,43 @@
 /* MY STYLES */
 
+table {
+    margin: 30px 0; !important;
+}
+
+.my-cart-item img {
+    max-height: 100px;
+}
+
+.table tbody>tr>td.my-vertical-align {
+    vertical-align: middle;
+}
+
+.add-to-cart-resp {
+    font-size: 10pt;
+    margin: 20px 0;
+}
+
+.my-main-feature {
+    margin: 30px 0;
+    font-size: 12pt;
+}
+
+.my-item-price {
+    font-size: 20pt;
+}
+
+.delete:hover {
+    cursor: hand;
+}
+
+.carousel-inner {
+  height:100%;
+}
+
+.my-sale-item {
+    margin: 20px;
+}
+
 #my-carousel-item {
     height: 100%;
 !important;
