@@ -8,5 +8,6 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('mainapp.urls')),
+    url(r'paypal/', include('paypal.standard.ipn.urls'))
 
 ]

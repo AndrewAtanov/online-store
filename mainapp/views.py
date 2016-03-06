@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from paypal.standard.forms import PayPalPaymentsForm
 
 # Create your views here.
 
@@ -69,9 +70,24 @@ def item(request):
             "description": "Мощная 18.0 В XR Li-Ion компактная дрель/шуруповерт последнего поколения с новыми уникальными аккумуляторами 5,0 Ач технологии XR Li-Ion Технология бесщёточных двигателей Brushless для превосходной эффективности и производительности инструмента Очень компактный, лёгкий и эргономичный дизайн, позволяющий использовать инструмент в ограниченном пространстве",
             "prop": {"prop1": "val1", "prop2": "val2", "prop3": "val3"},
             "main_feature": ["main feature 1", "main feature 2", "main feature 3"],
-            "price": "5599 руб."}
+            "price": "5599 руб."
+            }
 
-    return render(request, 'mainapp/item.html', {"dict": dict})
+    paypal_dict = {
+        "business": "receiver_email@example.com",
+        "amount": "0.00",
+        "item_name": dict['item_name'],
+        "invoice": "unique-invoice-id",
+        "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
+        "return_url": "https://www.example.com/your-return-location/",
+        "cancel_return": "https://www.example.com/your-cancel-location/",
+        "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+
+    return render(request, 'mainapp/item.html', {"dict": dict, 'form': form})
 
 
 def cart(request):
@@ -87,7 +103,29 @@ def cart(request):
              },
             ]
     sum = 100500
-    return render(request, 'mainapp/cart.html', {"dict": dict, "sum": sum})
+
+    # What you want the button to do.
+    paypal_dict = {
+        "cmd": "_cart",
+        "upload": 1,
+        "business": "receiver_email@example.com",
+        "amount_1": "159.00",
+        "item_name_1": "Перфоратор DeWALT D25103K",
+        "item_name_2": "Перфоратор DeWALT D25103K",
+        "amount_2": "178.00",
+        # "invoice": "unique-invoice-id",
+        # "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
+        # "return_url": "https://www.example.com/your-return-location/",
+        # "cancel_return": "https://www.example.com/your-cancel-location/",
+        # "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form, "dict": dict, "sum": sum}
+    # return render(request, "payment.html", context)
+
+    return render(request, 'mainapp/cart.html', context)
 
 
 def add(request):

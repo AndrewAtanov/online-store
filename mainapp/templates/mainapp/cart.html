@@ -59,9 +59,14 @@
                     <h2><b>ИТОГО:</b> {{ sum }} руб.</h2>
                 </div>
                 <div class="row text-right">
-                    <button type="button" class="btn btn-lg btn-success">
-                        Оформить
-                    </button>
+                    <div class="col-md-6 text-right">
+                        {{ form.render }}
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-lg btn-success">
+                            Оформить
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
