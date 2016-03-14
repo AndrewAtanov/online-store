@@ -6,8 +6,12 @@
 
 
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/jquery-2.2.0.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bootstrap-dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-dist/js/bootstrap.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-dist/css/font-awesome.css' %}">
+
+
     {#    <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap-theme.css' %}">#}
     <link href="{% static 'css/mystyles.css' %}" rel="stylesheet" type="text/css">
 
@@ -41,15 +45,39 @@
                 </li>
                 <li>
                     <a href="/cart/"><i
-                            class="fa fa-fw glyphicon glyphicon-shopping-cart pull-left text-inverse"></i><br></a>
+                            class="fa fa-lg fa-shopping-cart pull-left text-inverse"></i><br></a>
                 </li>
-
-                <li><a href="#"><i class="fa fa-fw glyphicon glyphicon-search text-inverse"></i></a></li>
+                <li>
+                    <a href="#"><i class="fa fa-lg fa-search text-inverse"></i></a>
+                </li>
+                {% block auth %} {% endblock %}
             </ul>
         </div>
     </div>
 </div>
 <!-- HEADER -->
+
+<div id="authModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <a class="btn btn-block btn-social btn-vk" href="/login/vk-oauth2/">
+                    <span class="fa fa-vk"></span> Войти с помощью Вконтакте
+                </a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 {% block content %} {% endblock %}
 

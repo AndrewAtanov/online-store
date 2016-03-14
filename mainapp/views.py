@@ -6,7 +6,11 @@ from paypal.standard.forms import PayPalPaymentsForm
 
 
 def main(request):
-    return render(request, 'mainapp/main.html', {})
+    context = {}
+    context["auth"] = True
+    if not request.user.is_authenticated():
+        context["auth"] = False
+    return render(request, 'mainapp/main.html', context)
 
 
 def catalog(request):

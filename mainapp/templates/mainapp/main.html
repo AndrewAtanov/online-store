@@ -1,5 +1,16 @@
 {% extends "mainapp/base.html" %}
 
+{% block auth %}
+    {% if auth %}
+        <li>
+            <a href="/accounts/profile"><i class="fa fa-lg fa-user text-inverse"></i></a>
+        </li>
+    {% else %}
+        <button type="button" style="margin-top: 7px" class="btn" data-toggle="modal" data-target="#authModal">Войти</button>
+    {% endif %}
+{% endblock %}
+
+
 
 {% block content %}
     {% load staticfiles %}
