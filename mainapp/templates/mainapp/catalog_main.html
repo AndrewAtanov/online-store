@@ -27,18 +27,18 @@
         <div class="row">
             {% for key, val in dict.items %}
                 <div class="col-md-3">
-                    <ul class="list-group">
+                    <div class="list-group">
                         <a href="#" class="list-group-item active">
                             <h4 class="list-group-item-heading">
                                 {{ key }}
                             </h4>
                         </a>
                         {% for v in val %}
-                            <li class="list-group-item">
-                                <a href="/catalog/elec">{{ v }}</a>
-                            </li>
+{#                            <a class="list-group-item">#}
+                                <a class="list-group-item" href="/catalog/elec">{{ v }}</a>
+{#                            </a>#}
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
             {% endfor %}
         </div>
