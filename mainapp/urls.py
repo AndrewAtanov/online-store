@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from . import views
+from django.conf.urls import handler404
 
+handler404 = 'mainapp/.views.page_not_found'
 
 urlpatterns = [
     url(r'^$', views.main, name='main'),

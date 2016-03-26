@@ -2,7 +2,7 @@
 
 
 table {
-    margin: 30px 0; !important;
+    margin: 30px 0 !important;
 }
 
 .my-cart-item img {
@@ -28,7 +28,7 @@ table {
 }
 
 .delete:hover {
-    cursor: hand;
+    cursor: pointer;
 }
 
 .carousel-inner {
@@ -40,13 +40,11 @@ table {
 }
 
 #my-carousel-item {
-    height: 100%;
-!important;
+    height: 100% !important;
 }
 
 #my-carousel {
-    height: 100%;
-!important;
+    height: 100% !important;
 }
 
 #my-categories {
@@ -99,8 +97,7 @@ table {
 }
 
 body {
-    padding-top: 50px;
-!important;
+    padding-top: 50px !important;
 }
 
 .my-nav-breadcrumb {

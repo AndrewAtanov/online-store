@@ -134,3 +134,7 @@ def cart(request):
 
 def add(request):
     return HttpResponse("Добавлено")
+
+
+def page_not_found(request):
+    return HttpResponse("Добавлено")

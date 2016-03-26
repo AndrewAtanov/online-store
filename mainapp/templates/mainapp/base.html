@@ -1,10 +1,10 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Онлайн магазин{% endblock %}</title>
-
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/png">
 
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/jquery-2.2.0.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/bootstrap.js' %}"></script>
@@ -91,7 +91,13 @@
                 <h4>ООО Магазин строительных материалов</h4>
             </div>
             <div class="col-md-5">
-
+                <p>
+                    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                        <img style="border:0;width:88px;height:31px"
+                             src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
+                             alt="Valid CSS!"/>
+                    </a>
+                </p>
             </div>
         </div>
     </div>
