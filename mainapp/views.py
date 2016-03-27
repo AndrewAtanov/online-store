@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from paypal.standard.forms import PayPalPaymentsForm
+from .models import Product
 
 # Create your views here.
+
+cart_ids = []
 
 
 def main(request):
@@ -37,28 +40,9 @@ def contact(request):
 
 
 def catalog_category(request):
-    dict = [[{"title":
-                  "Бесщёточная компактная дрель/шуруповерт 13 мм XR Li-Ion, 14.4 В",
-              "price": "2599 руб.",
-              "img_url": "img/shurvert.jpg",
-              "id": 1},
-             {"title":
-                  "Перфоратор DeWALT D25103K",
-              "price": "8999 руб.",
-              "img_url": "img/perf.jpg",
-              "id": 2},
-             {"title":
-                  "Дисковая пила DeWalt DWE560",
-              "price": "5599 руб.",
-              "img_url": "img/pil.jpg",
-              "id": 3}],
-            [{"title":
-                  "Двухскоростная дрель Makita DP4011",
-              "price": "10990 руб.",
-              "img_url": "img/5.jpg",
-              "id": 4}]
-            ]
-    return render(request, 'mainapp/catalog.html', {"dict": dict})
+    products = Product.objects.all()
+
+    return render(request, 'mainapp/catalog.html', {"products": products})
 
 
 def sales(request):
@@ -95,18 +79,10 @@ def item(request):
 
 
 def cart(request):
-    dict = [{"name": "Перфоратор DeWALT D25103K",
-             "img_url": "img/perf.jpg",
-             "number": "2",
-             "price": str(8999 * 2),
-             },
-            {"name": "Перфоратор DeWALT D25103K",
-             "img_url": "img/perf.jpg",
-             "number": "2",
-             "price": str(8999 * 2),
-             },
-            ]
-    sum = 100500
+    cart_data = Product.objects.filter(id__in=cart_ids)
+    cost_sum = 0
+    for _item in cart_data:
+        cost_sum += _item.price
 
     # What you want the button to do.
     paypal_dict = {
@@ -119,20 +95,20 @@ def cart(request):
         "amount_2": "178.00",
         # "invoice": "unique-invoice-id",
         # "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
-        # "return_url": "https://www.example.com/your-return-location/",
+        "return_url": "https://127.0.0.1:8000/",
         # "cancel_return": "https://www.example.com/your-cancel-location/",
         # "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
     }
 
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form, "dict": dict, "sum": sum}
-    # return render(request, "payment.html", context)
+    context = {"form": form, "cart_data": cart_data, "cost_sum": cost_sum}
 
     return render(request, 'mainapp/cart.html', context)
 
 
 def add(request):
+    cart_ids.append(int(request.GET['item']))
     return HttpResponse("Добавлено")
 
 

@@ -23,7 +23,9 @@
         <div class="container">
             <div class="row hidden-lg">
                 <div class="col-md-12">
-                    <button type="button" id="filter" data-placement="right" data-trigger="focus" data-toggle="popover" class="btn btn-default">Фильтры</button>
+                    <button type="button" id="filter" data-placement="right" data-trigger="focus" data-toggle="popover"
+                            class="btn btn-default">Фильтры
+                    </button>
                 </div>
             </div>
             <div class="row">
@@ -59,34 +61,31 @@
                 </div>
 
                 <div id="my-catalog-table" class="col-lg-9 col-md-12">
-                    {% for row in dict %}
-                        <div class="row">
-                            {% for el in row %}
-                                <div class="col-md-4">
-                                    <div class="panel my-cat-item">
-                                        <div class="panel-body">
-                                            <img alt="{{ el.title }}" src="{% static '' %}{{ el.img_url }}">
-                                            <div class="my-item-title text-center">
-                                                <a href="#"><span class="text-primary">{{ el.title }}</span></a>
+                    {% for item in products %}
+                        <div class="col-md-4">
+                            <div class="panel my-cat-item">
+                                <div class="panel-body">
+                                    <img alt="{{ item.title }}" src="{{ item.img.url }}">
+                                    <div class="my-item-title text-center">
+                                        <a href="#"><span class="text-primary">{{ item.title }}</span></a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="row-eq-height vertical-align">
+                                            <div class="col-md-6 col-xs-6">
+                                                <div class="text-info text-center">{{ item.price }} руб.</div>
                                             </div>
-                                            <div class="row">
-                                                <div class="row-eq-height vertical-align">
-                                                    <div class="col-md-6 col-xs-6">
-                                                        <div class="text-info text-center">{{ el.price }}</div>
-                                                    </div>
-                                                    <div class="col-md-6 col-xs-6">
-                                                        <button type="button" id="{{ el.id }}" class="add btn btn-responsive btn-primary">
-                                                            <span class="glyphicon glyphicon-shopping-cart"></span>
-                                                            В корзину
-                                                        </button>
+                                            <div class="col-md-6 col-xs-6">
+                                                <button type="button" id="{{ item.id }}"
+                                                        class="add btn btn-responsive btn-primary">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    В корзину
+                                                </button>
 
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

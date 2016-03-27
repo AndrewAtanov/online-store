@@ -11,11 +11,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='MainCarousel',
+            name='Product',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('url', models.TextField()),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('title', models.CharField(max_length=100)),
+                ('img', models.ImageField(upload_to='')),
+                ('description', models.TextField()),
+                ('price', models.IntegerField()),
             ],
         ),
     ]

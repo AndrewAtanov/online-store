@@ -31,20 +31,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for row in dict %}
+                    {% for item in cart_data %}
                         <tr class="my-cart-item">
                             <td>
                                 <div class="row-eq-height vertical-align">
                                     <div class="col-md-6">
-                                        <img alt="{{ row.name }}" src="{% static '' %}{{ row.img_url }}">
+                                        <img alt="{{ item.title }}" src="{{ item.img.url }}">
                                     </div>
                                     <div class="col-md-6">
-                                        <p>{{ row.name }}</p>
+                                        <p>{{ item.title }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="my-vertical-align">{{ row.number }}</td>
-                            <td class="my-vertical-align">{{ row.price }} руб.</td>
+                            <td class="my-vertical-align">{{ item.number }}</td>
+                            <td class="my-vertical-align">{{ item.price }} руб.</td>
                             <td class="my-vertical-align"><span class="glyphicon glyphicon-remove-sign delete"></span>
                             </td>
                         </tr>
@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-md-12 text-right">
                 <div class="row">
-                    <h2> ИТОГО: {{ sum }} руб.</h2>
+                    <h2> ИТОГО: {{ cost_sum }} руб.</h2>
                 </div>
                 <div class="row text-right">
                     <div class="col-md-6 text-right">

@@ -1,6 +1,9 @@
 from django.conf.urls import url
 from . import views
 from django.conf.urls import handler404
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
+from django.conf import settings
 
 handler404 = 'mainapp/.views.page_not_found'
 
@@ -14,3 +17,5 @@ urlpatterns = [
     url(r'^cart/', views.cart, name='cart'),
     url(r'^add-to-cart/$', views.add, name='add'),
 ]
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
