@@ -5,6 +5,9 @@
 {% block title %} Каталог {% endblock %}
 
 {% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'js/catalog-src.js' %}"></script>
+
     <div class="my-nav-breadcrumb">
         <div class="container">
             <div class="row">
@@ -45,7 +48,7 @@
                             </td>
                             <td class="my-vertical-align">{{ item.number }}</td>
                             <td class="my-vertical-align">{{ item.price }} руб.</td>
-                            <td class="my-vertical-align"><span class="glyphicon glyphicon-remove-sign delete"></span>
+                            <td class="my-vertical-align"><span id="{{ item.id }}" class="glyphicon glyphicon-remove-sign delete"></span>
                             </td>
                         </tr>
                     {% endfor %}

@@ -5,7 +5,7 @@ from .models import Product
 
 # Create your views here.
 
-cart_ids = []
+cart_ids = set()
 
 
 def main(request):
@@ -108,8 +108,13 @@ def cart(request):
 
 
 def add(request):
-    cart_ids.append(int(request.GET['item']))
+    cart_ids.add(int(request.GET['item']))
     return HttpResponse("Добавлено")
+
+
+def remove(request):
+    cart_ids.remove(int(request.GET['item']))
+    return HttpResponse(cart_ids.__str__())
 
 
 def page_not_found(request):

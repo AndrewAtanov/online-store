@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^catalog/[a-z]+/[a-z]+/$', views.item, name="item"),
     url(r'^cart/', views.cart, name='cart'),
     url(r'^add-to-cart/$', views.add, name='add'),
+    url(r'^remove-from-cart/$', views.remove, name='remove'),
+
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
