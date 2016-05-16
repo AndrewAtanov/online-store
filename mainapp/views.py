@@ -54,17 +54,12 @@ def sales(request):
 
 
 def item(request):
-    dict = {"item_name": "Перфоратор DeWALT D25103K",
-            "description": "Мощная 18.0 В XR Li-Ion компактная дрель/шуруповерт последнего поколения с новыми уникальными аккумуляторами 5,0 Ач технологии XR Li-Ion Технология бесщёточных двигателей Brushless для превосходной эффективности и производительности инструмента Очень компактный, лёгкий и эргономичный дизайн, позволяющий использовать инструмент в ограниченном пространстве",
-            "prop": {"prop1": "val1", "prop2": "val2", "prop3": "val3"},
-            "main_feature": ["main feature 1", "main feature 2", "main feature 3"],
-            "price": "5599 руб."
-            }
+    product = Product.objects.all()[0]
 
     paypal_dict = {
         "business": "receiver_email@example.com",
         "amount": "0.00",
-        "item_name": dict['item_name'],
+        "item_name": product.title,
         "invoice": "unique-invoice-id",
         "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
         "return_url": "https://www.example.com/your-return-location/",
@@ -75,7 +70,7 @@ def item(request):
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
 
-    return render(request, 'mainapp/item.html', {"dict": dict, 'form': form})
+    return render(request, 'mainapp/item.html', {"product": product, 'form': form})
 
 
 def cart(request):

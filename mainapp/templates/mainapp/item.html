@@ -1,10 +1,13 @@
 {% extends 'mainapp/base.html' %}
 
-{% load staticfiles %}
 
-{% block title %} {{ dict.item_name }} {% endblock %}
+{% block title %} {{ product.title }} {% endblock %}
+
 
 {% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'js/item.js' %}"></script>
+
     <div class="my-nav-breadcrumb">
         <div class="container">
             <div class="row">
@@ -13,7 +16,7 @@
                         <li><a href="/">Главная</a></li>
                         <li><a href="/catalog/">Каталог</a></li>
                         <li><a href="/catalog/elec/">Электроинструменты</a></li>
-                        <li class="active">{{ dict.item_name }}</li>
+                        <li class="active">{{ product.title }}</li>
                     </ol>
                 </div>
             </div>
@@ -23,33 +26,33 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 text-center">
-                <img alt="{{ dict.item_name }}" src="{% static 'img/shurvert.jpg' %}" height="300">
+                <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="300">
                 <div class="row">
-                    <img alt="{{ dict.item_name }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ dict.item_name }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ dict.item_name }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ dict.item_name }}" src="{% static 'img/shurvert.jpg' %}" height="50">
+                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
+                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
+                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
+                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
                 </div>
             </div>
             <div class="col-md-4">
-                <h2 class="text-primary text-center">{{ dict.item_name }}</h2>
+                <h2 class="text-primary text-center">{{ product.title }}</h2>
                 <ul class="my-main-feature">
-                    {% for feature in dict.main_feature %}
-                        <li>{{ feature }}</li>
-                    {% endfor %}
+{#                    {% for feature in dict.main_feature %}#}
+{#                        <li>{{ feature }}</li>#}
+{#                    {% endfor %}#}
                 </ul>
                 <br>
                 <hr>
                 <div class="row-eq-height vertical-align">
                     <div class="col-md-6 hidden-xs hidden-sm">
-                        <div class="text-info text-left my-item-price">{{ dict.price }}</div>
+                        <div class="text-info text-left my-item-price">{{ product.price }} руб.</div>
                     </div>
                     <div class="col-md-6 center-block hidden-md hidden-lg">
-                        <div class="text-info  my-item-price">{{ dict.price }}</div>
+                        <div class="text-info  my-item-price">{{ product.price }}</div>
                     </div>
 
                     <div class="col-md-6 text-center center-block">
-                        <button type="button" class="btn btn-lg btn-responsive btn-success">
+                        <button type="button" id="{{ product.id }}" class="add btn btn-lg btn-responsive btn-success">
                             <span class="glyphicon glyphicon-shopping-cart"></span>
                             В корзину
                         </button>
@@ -69,22 +72,22 @@
                 </ul>
                 <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
-                        <h3>{{ dict.item_name }}</h3>
+                        <h3>{{ product.title }}</h3>
                         <hr>
-                        <p> {{ dict.description }} </p>
+                        <p> {{ product.description }} </p>
                     </div>
                     <div id="menu1" class="tab-pane fade">
-                        <h3>{{ dict.item_name }}</h3>
+                        <h3>{{ product.title }}</h3>
                         <hr>
-                        <p> {{ dict.description }} </p>
+                        <p> {{ product.description }} </p>
                         <table class="table table-striped">
                             <tbody>
-                            {% for key, val in dict.prop.items %}
-                                <tr>
-                                    <td>{{ key }}</td>
-                                    <td>{{ val }}</td>
-                                </tr>
-                            {% endfor %}
+{#                            {% for key, val in dict.prop.items %}#}
+{#                                <tr>#}
+{#                                    <td>{{ key }}</td>#}
+{#                                    <td>{{ val }}</td>#}
+{#                                </tr>#}
+{#                            {% endfor %}#}
                             </tbody>
                         </table>
 
