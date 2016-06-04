@@ -136,15 +136,17 @@ def add(request):
     else:
         _cart.quantity[product.id] += 1
 
-    _cart.total_price += product.price
-
     _cart.save()
 
     return response
 
 
 def remove(request):
-    cart_ids.remove(int(request.GET['item']))
+    _cart = get_or_create_cart(request, response=None, create=False)
+    prod = Product.objects.filter(id=int(request.GET['item']))[0]
+    _cart.products.remove(prod)
+    _cart.quantity.pop(int(request.GET['item']))
+    _cart.save()
     return HttpResponse(cart_ids.__str__())
 
 
