@@ -80,13 +80,14 @@ class Cart(models.Model):
 
         super(Cart, self).save(*args, **kwargs)
 
+        self.total_price = 0
         for key, val in self.quantity.items():
             self.total_price += Product.objects.filter(id=key)[0].price * val
 
         super(Cart, self).save(*args, **kwargs)
 
     def __str__(self):
-        return 'Cart =)'
+        return 'Cart'
 
 
 class Sale(models.Model):

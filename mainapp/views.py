@@ -5,13 +5,18 @@ from .models import Product, Category, Cart
 import random
 from datetime import datetime
 from mainapp.cart import get_or_create_cart
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 random.seed(datetime.now())
 
 # Create your views here.
 
 cart_ids = set()
+ONE_DAY = 24 * 60 * 60
 
+
+@cache_page(ONE_DAY)
 def main(request):
     context = {}
     context["auth"] = True
@@ -137,6 +142,8 @@ def add(request):
         _cart.quantity[product.id] += 1
 
     _cart.save()
+
+    cache.set('cart_' + str(_cart.id), _cart)
 
     return response
 
