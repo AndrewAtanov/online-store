@@ -2,16 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from paypal.standard.forms import PayPalPaymentsForm
 from .models import Product, Category, Cart
-import  string, random
+import random
 from datetime import datetime
+from mainapp.cart import get_or_create_cart
 
 random.seed(datetime.now())
 
 # Create your views here.
 
 cart_ids = set()
-TOKEN_LEN = 40
-ONE_MONTH = 24 * 60 * 60 * 31
 
 def main(request):
     context = {}
@@ -91,18 +90,13 @@ def item(request):
                   {"product": cur_prod, 'form': form, 'nav_bar': nav_bar[1:]})
 
 
-def __generate_token(_len):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(_len))
-
-
 def cart(request):
 
-    cart_data = Product.objects.filter(id__in=cart_ids)
-    cost_sum = 0
-    for _item in cart_data:
-        cost_sum += _item.price
+    _cart = get_or_create_cart(request, response=None, create=False)
 
-
+    cart_products = []
+    if _cart:
+        cart_products = _cart.products.all()
 
     # What you want the button to do.
     paypal_dict = {
@@ -122,27 +116,21 @@ def cart(request):
 
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form, "cart_data": cart_data, "cost_sum": cost_sum}
+    context = {"form": form, "cart_data": cart_products, 'cart': _cart}
 
     return render(request, 'mainapp/cart.html', context)
 
 
 def add(request):
-    token = request.session._session.get('token', '')
-    add_token = False
-    if not token:
-        token = __generate_token(TOKEN_LEN)
-        _c = Cart(token=token)
-        _c.save()
-        add_token = True
-
-    cur_cart = Cart.objects.filter(token=token)[0]
-    cur_cart.products.add(Product.objects.filter(id=int(request.GET['product_id']))[0])
-
     response = HttpResponse("Добавлено")
+    product = Product.objects.filter(id=int(request.GET['product_id']))[0]
+    _cart = get_or_create_cart(request, response)
 
-    if add_token:
-        response.set_cookie('token', token, ONE_MONTH)
+    if product not in _cart.products:
+        _cart.products.add(product)
+        _cart.total_price += product.price
+
+    _cart.save()
 
     return response
 

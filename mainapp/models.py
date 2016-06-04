@@ -47,21 +47,27 @@ class Stockroom(models.Model):
 
 
 class Customer(models.Model):
-    full_name = models.CharField(max_length=200)
-    address = models.TextField()
-    phone_number = models.CharField(max_length=30)
-    info = models.TextField()
+    full_name = models.CharField(max_length=200, default='')
+    address = models.TextField(default='')
+    phone_number = models.CharField(max_length=30, default='')
+    info = models.TextField(default='')
 
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, null=True)
 
     def __str__(self):
         return self.full_name
+
+
+def create_customer(user):
+    """ Создает объект Customer для User """
+    Customer(user=user, full_name=user.last_name).save()
 
 
 class Cart(models.Model):
     date = models.DateField(auto_now=True)
     released = models.BooleanField(default=False)
     products = models.ManyToManyField(Product, null=True)
+    total_price = models.IntegerField(default=0)
 
     token = models.CharField(max_length=100, null=True)
     customer = models.ForeignKey(Customer, null=True)
