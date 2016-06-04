@@ -9,9 +9,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <ol class="breadcrumb" style="margin-bottom: 5px;">
-                        <li><a href="#">Главная</a></li>
-                        <li><a href="#">Каталог</a></li>
-                        <li class="active">Электроинструменты</li>
+                        <li><a href="/catalog/">Каталог</a></li>
+
+                        {% for el in nav_bar %}
+                            <li><a href="/catalog/{{ el.translit_title }}">{{ el }}</a> </li>
+                        {% endfor %}
                     </ol>
 
                 </div>
@@ -67,7 +69,7 @@
                                 <div class="panel-body">
                                     <img alt="{{ item.title }}" src="{{ item.img.url }}">
                                     <div class="my-item-title text-center">
-                                        <a href="#"><span class="text-primary">{{ item.title }}</span></a>
+                                        <a href="/products/{{ item.translit_title }}"><span class="text-primary">{{ item.title }}</span></a>
                                     </div>
                                     <div class="row">
                                         <div class="row-eq-height vertical-align">

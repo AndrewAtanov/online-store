@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from paypal.standard.forms import PayPalPaymentsForm
-from .models import Product
+from .models import Product, Category, Cart
+import  string, random
+from datetime import datetime
+
+random.seed(datetime.now())
 
 # Create your views here.
 
 cart_ids = set()
-
+TOKEN_LEN = 40
+ONE_MONTH = 24 * 60 * 60 * 31
 
 def main(request):
     context = {}
@@ -17,17 +22,11 @@ def main(request):
 
 
 def catalog(request):
-    catalog_dict = {"Инструменты":
-                        ["1", "2", "3", "4"],
-                    "Электроинструменты":
-                        ["1", "2", "4"],
-                    "Стройматериалы":
-                        ["1", "2", "3", "4"],
-                    "Что-то еще":
-                        ["1", "2", "3"],
-                    "Ну и на последок":
-                        ["Чтобы", "Футер", "Не", "Лез", "Вверх"]
-                    }
+    catalog_dict = {}
+    main_categories = Category.objects.filter(categories_id__isnull=True)
+    for cat in main_categories:
+        catalog_dict[cat.title] = Category.objects.filter(categories_id=cat.id)
+
     return render(request, 'mainapp/catalog_main.html', {"dict": catalog_dict})
 
 
@@ -40,9 +39,18 @@ def contact(request):
 
 
 def catalog_category(request):
-    products = Product.objects.all()
+    category_name = request.path.split('/')[-2]
 
-    return render(request, 'mainapp/catalog.html', {"products": products})
+    cur_category = Category.objects.filter(translit_title=category_name)[0]
+    nav_bar = [cur_category]
+
+    while nav_bar[-1].categories:
+        nav_bar.append(nav_bar[-1].categories)
+
+    nav_bar.reverse()
+    products = Product.objects.filter(category__translit_title=category_name)
+
+    return render(request, 'mainapp/catalog.html', {"products": products, "nav_bar": nav_bar[1:]})
 
 
 def sales(request):
@@ -54,12 +62,21 @@ def sales(request):
 
 
 def item(request):
-    product = Product.objects.all()[0]
+
+    prod_name = request.path.split('/')[-2]
+
+    cur_prod = Product.objects.filter(translit_title=prod_name)[0]
+    nav_bar = [cur_prod, cur_prod.category]
+
+    while nav_bar[-1].categories:
+        nav_bar.append(nav_bar[-1].categories)
+
+    nav_bar.reverse()
 
     paypal_dict = {
         "business": "receiver_email@example.com",
         "amount": "0.00",
-        "item_name": product.title,
+        "item_name": cur_prod.title,
         "invoice": "unique-invoice-id",
         "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
         "return_url": "https://www.example.com/your-return-location/",
@@ -70,14 +87,22 @@ def item(request):
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
 
-    return render(request, 'mainapp/item.html', {"product": product, 'form': form})
+    return render(request, 'mainapp/item.html',
+                  {"product": cur_prod, 'form': form, 'nav_bar': nav_bar[1:]})
+
+
+def __generate_token(_len):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(_len))
 
 
 def cart(request):
+
     cart_data = Product.objects.filter(id__in=cart_ids)
     cost_sum = 0
     for _item in cart_data:
         cost_sum += _item.price
+
+
 
     # What you want the button to do.
     paypal_dict = {
@@ -103,8 +128,23 @@ def cart(request):
 
 
 def add(request):
-    cart_ids.add(int(request.GET['item']))
-    return HttpResponse("Добавлено")
+    token = request.session._session.get('token', '')
+    add_token = False
+    if not token:
+        token = __generate_token(TOKEN_LEN)
+        _c = Cart(token=token)
+        _c.save()
+        add_token = True
+
+    cur_cart = Cart.objects.filter(token=token)[0]
+    cur_cart.products.add(Product.objects.filter(id=int(request.GET['product_id']))[0])
+
+    response = HttpResponse("Добавлено")
+
+    if add_token:
+        response.set_cookie('token', token, ONE_MONTH)
+
+    return response
 
 
 def remove(request):

@@ -1,6 +1,21 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from pytils import translit
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=100)
+    categories = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
+    translit_title = models.CharField(max_length=200, default='')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # object is being created, thus no primary key field yet
+            self.translit_title = translit.slugify(self.title)
+        super(Category, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
 class Product(models.Model):
@@ -8,6 +23,15 @@ class Product(models.Model):
     img = models.ImageField(upload_to='img/products')
     description = models.TextField()
     price = models.IntegerField()
+
+    category = models.ForeignKey(Category, null=True)
+
+    translit_title = models.CharField(max_length=200, default='')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # object is being created, thus no primary key field yet
+            self.translit_title = translit.slugify(self.title)
+        super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -22,15 +46,6 @@ class Stockroom(models.Model):
         return self.title
 
 
-class Cart(models.Model):
-    date = models.DateField(auto_now=True)
-    released = models.BooleanField(default=False)
-    products = models.ManyToManyField(Product)
-
-    def __str__(self):
-        return 'Cart =)'
-
-
 class Customer(models.Model):
     full_name = models.CharField(max_length=200)
     address = models.TextField()
@@ -43,12 +58,16 @@ class Customer(models.Model):
         return self.full_name
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=100)
-    categories = models.ForeignKey('Category', on_delete=models.CASCADE)
+class Cart(models.Model):
+    date = models.DateField(auto_now=True)
+    released = models.BooleanField(default=False)
+    products = models.ManyToManyField(Product, null=True)
+
+    token = models.CharField(max_length=100, null=True)
+    customer = models.ForeignKey(Customer, null=True)
 
     def __str__(self):
-        return self.title
+        return 'Cart =)'
 
 
 class Sale(models.Model):

@@ -13,10 +13,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <ol class="breadcrumb" style="margin-bottom: 5px;">
-                        <li><a href="/">Главная</a></li>
                         <li><a href="/catalog/">Каталог</a></li>
-                        <li><a href="/catalog/elec/">Электроинструменты</a></li>
-                        <li class="active">{{ product.title }}</li>
+                        {% for el in nav_bar %}
+                            <li><a href="/catalog/{{ el.translit_title }}">{{ el }}</a></li>
+                        {% endfor %}
                     </ol>
                 </div>
             </div>

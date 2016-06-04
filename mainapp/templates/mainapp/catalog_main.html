@@ -10,10 +10,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <ol class="breadcrumb" style="margin-bottom: 5px;">
-                        <li><a href="#">Главная</a></li>
                         <li class="active">Каталог</li>
                     </ol>
-
                 </div>
             </div>
         </div>
@@ -35,7 +33,7 @@
                         </a>
                         {% for v in val %}
 {#                            <a class="list-group-item">#}
-                                <a class="list-group-item" href="/catalog/elec">{{ v }}</a>
+                                <a class="list-group-item" href="/catalog/{{ v.translit_title }}">{{ v }}</a>
 {#                            </a>#}
                         {% endfor %}
                     </div>
