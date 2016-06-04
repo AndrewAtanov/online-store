@@ -34,7 +34,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for item in cart_data %}
+                    {% for q, item in cart_data %}
                         <tr class="my-cart-item">
                             <td>
                                 <div class="row-eq-height vertical-align">
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="my-vertical-align">{{ item.number }}</td>
+                            <td class="my-vertical-align">{{ q }}</td>
                             <td class="my-vertical-align">{{ item.price }} руб.</td>
                             <td class="my-vertical-align"><span id="{{ item.id }}" class="glyphicon glyphicon-remove-sign delete"></span>
                             </td>

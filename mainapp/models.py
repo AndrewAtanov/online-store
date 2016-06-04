@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from pytils import translit
+from picklefield.fields import PickledObjectField
 
 
 class Category(models.Model):
@@ -68,9 +69,15 @@ class Cart(models.Model):
     released = models.BooleanField(default=False)
     products = models.ManyToManyField(Product, null=True)
     total_price = models.IntegerField(default=0)
+    quantity = PickledObjectField()
 
     token = models.CharField(max_length=100, null=True)
     customer = models.ForeignKey(Customer, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # object is being created, thus no primary key field yet
+            self.quantity = {}
+        super(Cart, self).save(*args, **kwargs)
 
     def __str__(self):
         return 'Cart =)'

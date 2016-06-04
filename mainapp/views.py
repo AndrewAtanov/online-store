@@ -98,6 +98,10 @@ def cart(request):
     if _cart:
         cart_products = _cart.products.all()
 
+    cart_products = list(cart_products)
+    for i, prod in enumerate(cart_products):
+        cart_products[i] = [_cart.quantity[prod.id], prod]
+
     # What you want the button to do.
     paypal_dict = {
         "cmd": "_cart",
@@ -126,9 +130,13 @@ def add(request):
     product = Product.objects.filter(id=int(request.GET['product_id']))[0]
     _cart = get_or_create_cart(request, response)
 
-    if product not in _cart.products:
+    if product not in _cart.products.all():
         _cart.products.add(product)
-        _cart.total_price += product.price
+        _cart.quantity[product.id] = 1
+    else:
+        _cart.quantity[product.id] += 1
+
+    _cart.total_price += product.price
 
     _cart.save()
 
