@@ -7,16 +7,14 @@ from datetime import datetime
 from mainapp.cart import get_or_create_cart
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
+from mysite.settings import TIME
 
 random.seed(datetime.now())
 
 # Create your views here.
 
-cart_ids = set()
-ONE_DAY = 24 * 60 * 60
-
-
-@cache_page(ONE_DAY)
+# Раскоментировать по надобности
+# @cache_page(TIME['DAY'])
 def main(request):
     context = {}
     context["auth"] = True
@@ -133,7 +131,7 @@ def cart(request):
 def add(request):
     response = HttpResponse("Добавлено")
     product = Product.objects.filter(id=int(request.GET['product_id']))[0]
-    _cart = get_or_create_cart(request, response)
+    _cart = get_or_create_cart(request=request, response=response)
 
     if product not in _cart.products.all():
         _cart.products.add(product)
@@ -141,9 +139,7 @@ def add(request):
     else:
         _cart.quantity[product.id] += 1
 
-    _cart.save()
-
-    cache.set('cart_' + str(_cart.id), _cart)
+    _cart.save(_cache=True)
 
     return response
 
@@ -153,9 +149,14 @@ def remove(request):
     prod = Product.objects.filter(id=int(request.GET['item']))[0]
     _cart.products.remove(prod)
     _cart.quantity.pop(int(request.GET['item']))
-    _cart.save()
-    return HttpResponse(cart_ids.__str__())
+    _cart.save(_cache=True)
+    return HttpResponse(str(_cart.total_price))
 
 
 def page_not_found(request):
     return HttpResponse("Добавлено")
+
+
+def get_total_price(request):
+    _cart = get_or_create_cart(request)
+    return HttpResponse('Сумма <b>' + str(_cart.total_price) + '</b> руб.')

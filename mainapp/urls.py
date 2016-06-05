@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^cart/', views.cart, name='cart'),
     url(r'^add-to-cart/$', views.add, name='add'),
     url(r'^remove-from-cart/$', views.remove, name='remove'),
+    url(r'^cart-total-price/$', views.get_total_price, name='cart total price')
 
 ]
 urlpatterns += staticfiles_urlpatterns()

@@ -124,3 +124,8 @@ MEDIA_URL = os.path.join(BASE_DIR, '/media/')
 CACHES = {'default': {'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
                       'LOCATION': '127.0.0.1:11211', }
           }
+
+TIME = {'DAY': 60*60*24,
+        'HOUR': 60*60,
+        'MONTH': 60*60*24*30
+        }

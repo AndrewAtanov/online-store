@@ -8,6 +8,8 @@
 
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/jquery-2.2.0.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap-dist/js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+
     <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap-dist/css/bootstrap-social.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap-dist/css/font-awesome.css' %}">
@@ -45,7 +47,7 @@
                     <a href="/contact">Контакты<br></a>
                 </li>
                 <li>
-                    <a href="/cart/"><i
+                    <a id="cart"  data-placement="bottom" data-html="true" data-toggle="popover" data-trigger="hover" data-content="Сумма 0 руб." href="/cart/"><i
                             class="fa fa-lg fa-shopping-cart pull-left text-inverse"></i><br></a>
                 </li>
                 <li>

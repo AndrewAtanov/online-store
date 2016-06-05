@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from pytils import translit
 from picklefield.fields import PickledObjectField
+from django.core.cache import cache
+from mysite.settings import TIME
 
 
 class Category(models.Model):
@@ -78,6 +80,9 @@ class Cart(models.Model):
         if not self.pk:  # object is being created, thus no primary key field yet
             self.quantity = {}
 
+        _cache = kwargs.get('_cache', False)
+        kwargs.pop('_cache', None)
+
         super(Cart, self).save(*args, **kwargs)
 
         self.total_price = 0
@@ -85,6 +90,12 @@ class Cart(models.Model):
             self.total_price += Product.objects.filter(id=key)[0].price * val
 
         super(Cart, self).save(*args, **kwargs)
+
+        if _cache:
+            if self.customer:
+                cache.set('cart_customer-' + str(self.customer.id), self, TIME['HOUR'])
+            else:
+                cache.set('cart_token-' + self.token, self, TIME['HOUR'])
 
     def __str__(self):
         return 'Cart'

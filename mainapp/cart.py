@@ -1,17 +1,18 @@
 from mainapp.models import Cart, create_customer
 import random, string
 from django.http import HttpResponse
+from django.core.cache import cache
+from mysite.settings import TIME
 
 TOKEN_LEN = 40
-ONE_MONTH = 24 * 60 * 60 * 31
 
 
 def __generate_token(_len):
     """ Генерирует случайный токен для корзины """
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(_len))
+    return ''.join(random.choice(string.ascii_uppercase) for _ in range(_len))
 
 
-def get_or_create_cart(request, response, create=True):
+def get_or_create_cart(request, response=None, create=True):
     """
     Возвращает последнюю корзину пользователя или создает новую.
     Если необходимо добавляет token в response
@@ -20,26 +21,36 @@ def get_or_create_cart(request, response, create=True):
         if not request.user.customer:
             create_customer(request.user)
 
-        try:
-            cart = Cart.objects.filter(customer=request.user.customer, released=False).latest('date')
-        except:
-            cart = Cart(customer=request.user.customer)
-            cart.save()
+        cart = None
+        cart = cache.get('cart_customer-' + str(request.user.customer.id))
+
+        if not cart:
+            try:
+                cart = Cart.objects.filter(customer=request.user.customer, released=False).latest('date')
+                cart = cache.set('cart_customer-' + str(request.user.customer.id),
+                                 cart, TIME['HOUR'])
+            except:
+                cart = Cart(customer=request.user.customer)
+                cart.save(_cache=True)
+                pass
 
         return cart
 
     token = request.COOKIES.get('token', '')
 
     if token:
-        return Cart.objects.filter(token=token).latest('date')
+        cart = cache.get_or_set('cart_token-' + str(token),
+                                Cart.objects.filter(token=token).latest('date'),
+                                TIME['HOUR'])
+        return cart
 
     if not create:
         return None
 
     token = __generate_token(TOKEN_LEN)
     cart = Cart(token=token)
-    cart.save()
+    cart.save(_cache=True)
 
-    response.set_cookie('token', token, ONE_MONTH)
+    response.set_cookie('token', token, TIME['MONTH'])
 
     return cart

@@ -25,7 +25,8 @@ $(document).ready(function () {
             data: {"item": $(this).attr('id')},
             success: function (data) {
                 cur_el.parent().parent().remove();
-                console.log(data)
+
+                $('#total-price').text(data)
             }
         });
     });
