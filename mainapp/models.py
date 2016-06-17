@@ -69,7 +69,7 @@ def create_customer(user):
 class Cart(models.Model):
     date = models.DateField(auto_now=True)
     released = models.BooleanField(default=False)
-    products = models.ManyToManyField(Product, null=True)
+    # products = models.ManyToManyField(Product, null=True)
     total_price = models.IntegerField(default=0)
     quantity = PickledObjectField()
 
@@ -86,8 +86,8 @@ class Cart(models.Model):
         super(Cart, self).save(*args, **kwargs)
 
         self.total_price = 0
-        for key, val in self.quantity.items():
-            self.total_price += Product.objects.filter(id=key)[0].price * val
+        for el in self.productcart_set.all():
+            self.total_price += el.product.price * el.quantity
 
         super(Cart, self).save(*args, **kwargs)
 
@@ -99,6 +99,15 @@ class Cart(models.Model):
 
     def __str__(self):
         return 'Cart'
+
+
+class ProductCart(models.Model):
+    product = models.ForeignKey(Product)
+    cart = models.ForeignKey(Cart)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return '%s in %s' % (self.product, self.cart)
 
 
 class Sale(models.Model):

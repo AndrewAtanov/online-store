@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from paypal.standard.forms import PayPalPaymentsForm
-from .models import Product, Category, Cart
+from .models import Product, Category, Cart, ProductCart
 import random
 from datetime import datetime
 from mainapp.cart import get_or_create_cart
@@ -99,29 +99,25 @@ def cart(request):
 
     cart_products = []
     if _cart:
-        cart_products = _cart.products.all()
+        cart_products = _cart.productcart_set.all()
 
-    cart_products = list(cart_products)
-    for i, prod in enumerate(cart_products):
-        cart_products[i] = [_cart.quantity[prod.id], prod]
-
-    # What you want the button to do.
+    cart_products_ = list(cart_products)
     paypal_dict = {
         "cmd": "_cart",
         "upload": 1,
         "business": "receiver_email@example.com",
-        "amount_1": "159.00",
-        "item_name_1": "Перфоратор DeWALT D25103K",
-        "item_name_2": "Перфоратор DeWALT D25103K",
-        "amount_2": "178.00",
-        # "invoice": "unique-invoice-id",
-        # "notify_url": "https://www.example.com" + 'paypal-ipn'[::-1],
+        # "amount_1": "159.00",
+        # "item_name_1": "Перфоратор DeWALT D25103K",
+        # "item_name_2": "Перфоратор DeWALT D25103K",
+        # "amount_2": "178.00",
         "return_url": "https://127.0.0.1:8000/",
-        # "cancel_return": "https://www.example.com/your-cancel-location/",
-        # "custom": "Upgrade all users!",  # Custom command to correlate to some function later (optional)
     }
+    cart_products = []
+    for i, pc in enumerate(cart_products_):
+        cart_products.append([pc.quantity, pc.product])
+        paypal_dict["amount_%d" % i] = pc.product.price * pc.quantity
+        paypal_dict["item_name_%d" % i] = pc.product.title
 
-    # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
     context = {"form": form, "cart_data": cart_products, 'cart': _cart}
 
@@ -133,11 +129,13 @@ def add(request):
     product = Product.objects.filter(id=int(request.GET['product_id']))[0]
     _cart = get_or_create_cart(request=request, response=response)
 
-    if product not in _cart.products.all():
-        _cart.products.add(product)
-        _cart.quantity[product.id] = 1
+    product_cart = ProductCart.objects.filter(product=product, cart=_cart)
+
+    if not product_cart:
+        ProductCart(product=product, cart=_cart).save()
     else:
-        _cart.quantity[product.id] += 1
+        product_cart[0].quantity += 1
+        product_cart[0].save()
 
     _cart.save(_cache=True)
 
@@ -147,8 +145,10 @@ def add(request):
 def remove(request):
     _cart = get_or_create_cart(request, response=None, create=False)
     prod = Product.objects.filter(id=int(request.GET['item']))[0]
-    _cart.products.remove(prod)
-    _cart.quantity.pop(int(request.GET['item']))
+    product_cart = ProductCart.objects.filter(product=prod, cart=_cart)
+    if product_cart:
+        product_cart[0].delete()
+
     _cart.save(_cache=True)
     return HttpResponse(str(_cart.total_price))
 
@@ -159,4 +159,4 @@ def page_not_found(request):
 
 def get_total_price(request):
     _cart = get_or_create_cart(request)
-    return HttpResponse('Сумма <b>' + str(_cart.total_price) + '</b> руб.')
+    return HttpResponse('Сумма %s руб.' % str(_cart.total_price))
