@@ -4,7 +4,7 @@ from paypal.standard.forms import PayPalPaymentsForm
 from .models import Product, Category, Cart, ProductCart
 import random
 from datetime import datetime
-from mainapp.cart import get_or_create_cart
+from mainapp.cart import get_or_create_cart, close_cart
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from mysite.settings import TIME
@@ -106,17 +106,13 @@ def cart(request):
         "cmd": "_cart",
         "upload": 1,
         "business": "receiver_email@example.com",
-        # "amount_1": "159.00",
-        # "item_name_1": "Перфоратор DeWALT D25103K",
-        # "item_name_2": "Перфоратор DeWALT D25103K",
-        # "amount_2": "178.00",
-        "return_url": "https://127.0.0.1:8000/",
+        "return_url": "http://127.0.0.1:8000/success",
     }
     cart_products = []
     for i, pc in enumerate(cart_products_):
         cart_products.append([pc.quantity, pc.product])
-        paypal_dict["amount_%d" % i] = pc.product.price * pc.quantity
-        paypal_dict["item_name_%d" % i] = pc.product.title
+        paypal_dict["amount_%d" % (i+1)] = pc.product.price * pc.quantity
+        paypal_dict["item_name_%d" % (i+1)] = pc.product.title
 
     form = PayPalPaymentsForm(initial=paypal_dict)
     context = {"form": form, "cart_data": cart_products, 'cart': _cart}
@@ -160,3 +156,21 @@ def page_not_found(request):
 def get_total_price(request):
     _cart = get_or_create_cart(request)
     return HttpResponse('Сумма %s руб.' % str(_cart.total_price))
+
+
+def success(request):
+    _cart = get_or_create_cart(request, response=None, create=False)
+
+    cart_products = []
+    if _cart:
+        cart_products = _cart.productcart_set.all()
+
+    cart_products_ = list(cart_products)
+    cart_products = []
+    for i, pc in enumerate(cart_products_):
+        cart_products.append([pc.quantity, pc.product])
+
+    context = {"cart_data": cart_products, 'cart': _cart}
+
+    close_cart(_cart)
+    return render(request, "mainapp/success.html", context)

@@ -39,9 +39,26 @@ def get_or_create_cart(request, response=None, create=True):
     token = request.COOKIES.get('token', '')
 
     if token:
-        cart = cache.get_or_set('cart_token-' + str(token),
-                                Cart.objects.filter(token=token).latest('date'),
-                                TIME['HOUR'])
+        cart = cache.get('cart_token-' + str(token))
+
+        if cart and not cart.released:
+            return cart
+        elif cart:
+            cart = Cart(token=token)
+
+        if not cart:
+            cart = Cart.objects.filter(token=token, released=False)
+
+            if cart:
+                cart = cart.latest('Data')
+            else:
+                cart = Cart(token=token)
+
+            if cart.released:
+                cart = Cart(token=token)
+
+        cart.save(_cache=True)
+
         return cart
 
     if not create:
@@ -54,3 +71,9 @@ def get_or_create_cart(request, response=None, create=True):
     response.set_cookie('token', token, TIME['MONTH'])
 
     return cart
+
+
+def close_cart(_cart):
+    """ Закрывает корзину после оплаты. Вполне может стать сложнее. """
+    _cart.released = True
+    _cart.save(_cache=True)

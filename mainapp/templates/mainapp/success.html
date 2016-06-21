@@ -1,0 +1,65 @@
+{% extends 'mainapp/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Каталог {% endblock %}
+
+{% block content %}
+    {% load staticfiles %}
+    <script src="{% static 'js/catalog-src.js' %}"></script>
+
+    <div class="my-nav-breadcrumb">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" style="margin-bottom: 5px;">
+                        <li><a href="/">Главная</a></li>
+                        <li class="active">Заказ</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Заказ</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped media-middle">
+                    <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Кол-во</th>
+                        <th>Цена</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for q, item in cart_data %}
+                        <tr class="my-cart-item">
+                            <td>
+                                <div class="row-eq-height vertical-align">
+                                    <div class="col-md-6">
+                                        <img alt="{{ item.title }}" src="{{ item.img.url }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{ item.title }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="my-vertical-align">{{ q }}</td>
+                            <td class="my-vertical-align">{{ item.price }} руб.</td>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="row">
+                    <h2> ОПЛАЧЕНО </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

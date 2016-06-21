@@ -26,13 +26,13 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 text-center">
-                <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="300">
-                <div class="row">
-                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">
-                </div>
+                <img alt="{{ product.title }}" src="{{ product.img.url }}" height="300">
+{#                <div class="row">#}
+{#                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">#}
+{#                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">#}
+{#                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">#}
+{#                    <img alt="{{ product.title }}" src="{% static 'img/shurvert.jpg' %}" height="50">#}
+{#                </div>#}
             </div>
             <div class="col-md-4">
                 <h2 class="text-primary text-center">{{ product.title }}</h2>
