@@ -24,6 +24,10 @@ def get_or_create_cart(request, response=None, create=True):
         cart = None
         cart = cache.get('cart_customer-' + str(request.user.customer.id))
 
+        if cart and cart.released:
+            cart = Cart(customer=request.user.customer)
+            cart.save(_cache=True)
+
         if not cart:
             try:
                 cart = Cart.objects.filter(customer=request.user.customer, released=False).latest('date')
